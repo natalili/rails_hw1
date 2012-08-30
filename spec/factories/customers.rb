@@ -2,6 +2,8 @@
 
 FactoryGirl.define do
   factory :customer do
-    name "MyString"
+    sequence(:name) {|n| "Custimer#{n}"}
   end
 end
+
+
