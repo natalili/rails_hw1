@@ -13,17 +13,15 @@ describe Order do
   
   it { should validate_presence_of(:customer_id) }
   it { should validate_presence_of(:order_date) }
+  it { should validate_presence_of(:items) }
   
   it "should store in database  with valid attributes" do
     lambda{
-      @order = FactoryGirl.create(:order)
-      @order.save 
+    @customer = FactoryGirl.create(:customer)
+    @order =  @customer.orders.create(:order_date => Time.zone.now)
+    @order.items << FactoryGirl.create(:item)
+    @order.save
     }.should change{ Order.count }.by 1
-  end
-  
-  xit "should have at least one item" do
-    oder = Order.new
-    #???
   end
   
 end

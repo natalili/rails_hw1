@@ -7,7 +7,15 @@ class Item < ActiveRecord::Base
   validates :price, :presence => true, 
                     :format => { :with => /^\d{0,}\.\d{2}$/}
   
-  scope :popular, lambda { joins(:orders).group("items.id") } 
-  scope :loyalty_program_items, lambda { joins(:orders).where("orders.id in (?)",  Order.loyalty_program_orders.to_a) }
+  scope :popular, lambda { |count|
+    select('COUNT("items"."id") AS "count_items_id", "items".*').
+    joins(:orders).group("items.id").
+    order("count_items_id DESC").
+    having("count_items_id > ?", count)
+  } 
+  scope :loyalty_program_items, lambda { 
+    joins(:orders).
+    where("orders.id in (?)",  Order.loyalty_program_orders.to_a) 
+  }
 
 end

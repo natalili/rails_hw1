@@ -22,16 +22,26 @@ describe Customer do
       2.times do
         @order1.items << FactoryGirl.create(:item)
       end
+      @order1.save
     @order2 =  @customer.orders.create(:order_date => Time.zone.now)
       3.times do
         @order2.items << FactoryGirl.create(:item)
       end
+      @order2.save
     @customer.items.count.should == 5
   end
 
-  xit "should return a list of customers who ordered 2 or more items in the last 90 days" do
-    valid_loyalty_program = []
-    @customer.loyalty_program.should == valid_loyalty_program
+  it "should return a list of customers who ordered 2 or more items in the last 90 days" do
+    @customer = FactoryGirl.create(:customer)
+    
+    @order =  @customer.orders.create(:order_date => Time.zone.now)
+      2.times do
+        @order.items << FactoryGirl.create(:item)
+      end
+      @order.save
+    valid_loyalty_program = Array.new
+    valid_loyalty_program << @customer
+    Customer.loyalty_program.should == valid_loyalty_program
   end
   
 end
