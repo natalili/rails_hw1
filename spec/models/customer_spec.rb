@@ -33,15 +33,12 @@ describe Customer do
 
   it "should return a list of customers who ordered 2 or more items in the last 90 days" do
     @customer = FactoryGirl.create(:customer)
-    
     @order =  @customer.orders.create(:order_date => Time.zone.now)
       2.times do
         @order.items << FactoryGirl.create(:item)
       end
       @order.save
-    valid_loyalty_program = Array.new
-    valid_loyalty_program << @customer
-    Customer.loyalty_program.should == valid_loyalty_program
+    Customer.loyalty_program.should == [@customer]
   end
   
 end

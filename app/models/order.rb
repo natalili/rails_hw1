@@ -8,6 +8,4 @@ attr_accessible :customer_id, :item_id, :order_date
   validates :order_date, :presence => true 
   validates :items, :presence => true
 
-  scope :loyalty_program_orders, lambda { where("order_date > ?", 90.days.ago) }
-
 end

@@ -8,9 +8,10 @@ class Customer < ActiveRecord::Base
   
   scope :loyalty_program, lambda { 
     select('COUNT("customers"."id") as "count_customers_id", "customers".*').
-    joins(:items).
-    where("items.id in (?)", Item.loyalty_program_items).
+    joins(:orders => :items).
+    where("orders.order_date > ?", 90.days.ago).
     group("customers.id").
     having("count_customers_id > ?", 1)
   }
+  
 end

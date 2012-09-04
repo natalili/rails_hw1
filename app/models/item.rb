@@ -13,9 +13,5 @@ class Item < ActiveRecord::Base
     order("count_items_id DESC").
     having("count_items_id > ?", count)
   } 
-  scope :loyalty_program_items, lambda { 
-    joins(:orders).
-    where("orders.id in (?)",  Order.loyalty_program_orders.to_a) 
-  }
 
 end

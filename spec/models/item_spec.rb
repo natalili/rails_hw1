@@ -22,7 +22,19 @@ describe Item do
   end
   
   it "should retrieve a ranked list of most popular items" do
-    Item.popular(0).should == Item.all 
+    10.times do
+      FactoryGirl.create(:item)
+    end
+    Item.popular(0).should == []
     
+    @customer = FactoryGirl.create(:customer)
+    @customer.save
+    @order =  @customer.orders.create(:order_date => Time.zone.now)
+    @order.items << Item.all
+    @order.save
+    Item.popular(0).should == Item.all
+    
+    @order.items << Item.last
+    Item.popular(1).should == [Item.last]
   end
 end
